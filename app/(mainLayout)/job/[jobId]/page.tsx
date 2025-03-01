@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import arcjet, { detectBot, tokenBucket } from "@/app/api/arcjet/route";
+import arcjet, { detectBot, tokenBucket } from "@/app/utils/arcjet";
 import { request } from "@arcjet/next";
 import { auth } from "@/app/utils/auth";
 import Link from "next/link";

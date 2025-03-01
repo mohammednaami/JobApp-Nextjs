@@ -1,5 +1,5 @@
 
-import arcjet, { detectBot, shield } from "@/app/api/arcjet/route";
+import arcjet, { detectBot, shield } from "@/app/utils/arcjet";
 import { request } from "@arcjet/next";
 
 import { requireUser } from "@/app/utils/requireUser";

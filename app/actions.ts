@@ -5,7 +5,7 @@ import { requireUser } from "./utils/requireUser";
 import { companySchema, jobSchema, jobSeekerSchema } from "./utils/zodSchema";
 import { prisma } from "./utils/db";
 import { redirect } from "next/navigation";
-import arcjet, { detectBot, shield } from "./api/arcjet/route";
+import arcjet, { detectBot, shield } from "./utils/arcjet";
 import { request } from "@arcjet/next";
 import { stripe } from "./utils/stripe";
 import { jobListingDurationPricing } from "./utils/JobListingDurationPricing";
