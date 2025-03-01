@@ -4,14 +4,16 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const helloWorld = inngest.createFunction(
-    { id: "hello-world" },
-    { event: "test/hello.world" },
-    async ({ event, step }) => {
-        await step.sleep("wait-a-moment", "1s");
-        return { message: `Hello ${event.data.email}!` };
-    },
-);
+type JobWithCompany = {
+    jobTitle: string;
+    location: string;
+    salaryFrom: number;
+    salaryTo: number;
+    Company: {
+      name: string;
+    };
+  };
+
 
 
 export const handleJobExpiration = inngest.createFunction(
@@ -53,7 +55,7 @@ export const sendPeriodicJobListings = inngest.createFunction(
             await step.sleep("wait-interval", `${intervalDays}d`);
             currentDay += intervalDays;
 
-            const recentJobs = await step.run("fetch-recent-jobs", async () => {
+            const recentJobs = await step.run("fetch-recent-jobs", async (): Promise<JobWithCompany[]> => {
                 return await prisma.jobPost.findMany({
                     where: {
                         status: "ACTIVE",
