@@ -30,7 +30,7 @@ export function PaginationComponent({
   };
 
   const generatePaginationItems = () => {
-    const items = [];
+    const items: (number | null)[] = [];
 
     if (totalPages <= 5) {
       for (let i = 1; i <= totalPages; i++) {
