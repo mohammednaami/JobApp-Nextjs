@@ -31,8 +31,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { CopyLinkMenuItem } from "@/components/utils/CopyLink";
 
+type JobListing = {
+  id: string;
+  jobTitle: string;
+  status: string;
+  createdAt: Date;
+  Company: {
+    name: string;
+    logo: string;
+  };
+};
 
-async function getJob(userId: string) {
+
+async function getJob(userId: string): Promise<JobListing[]> {
   const data = await prisma.jobPost.findMany({
     where: {
       Company: {
@@ -58,6 +69,7 @@ async function getJob(userId: string) {
 
   return data;
 }
+
 
 export default async function MyJobsPage() {
   const session = await requireUser();
