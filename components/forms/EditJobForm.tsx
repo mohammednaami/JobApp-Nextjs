@@ -29,11 +29,11 @@ import { XIcon } from "lucide-react";
 import JobListingDurationSelector from "./JobListingDurationSelector";
 import { UploadDropzone } from "../general/UploadThingReexported";
 import { useState } from "react";
-import { countryList } from "@/app/utils/countriesList";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { jobSchema } from "@/app/utils/zodSchema";
 import { z } from "zod";
 import { updateJobPost } from "@/app/actions";
+import { cityListGermany } from "@/app/utils/citiesList";
 
 interface iAppProps {
   jobPost: {
@@ -163,18 +163,10 @@ export default function EditJob({ jobPost }: iAppProps) {
                       </FormControl>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectLabel>Worldwide</SelectLabel>
-                          <SelectItem value="worldwide">
-                            <span>🌍</span>
-                            <span className="pl-2">Worldwide / Remote</span>
-                          </SelectItem>
-                        </SelectGroup>
-                        <SelectGroup>
                           <SelectLabel>Location</SelectLabel>
-                          {countryList.map((country) => (
-                            <SelectItem key={country.code} value={country.name}>
-                              <span>{country.flagEmoji}</span>
-                              <span className="pl-2">{country.name}</span>
+                          {cityListGermany.map((city) => (
+                            <SelectItem key={city.code} value={city.name}>
+                              <span className="pl-2">{city.name}</span>
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -261,20 +253,12 @@ export default function EditJob({ jobPost }: iAppProps) {
                       </FormControl>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectLabel>Worldwide</SelectLabel>
-                          <SelectItem value="worldwide">
-                            <span>🌍</span>
-                            <span className="pl-2">Worldwide / Remote</span>
-                          </SelectItem>
-                        </SelectGroup>
-                        <SelectGroup>
                           <SelectLabel>Location</SelectLabel>
-                          {countryList.map((country) => (
-                            <SelectItem key={country.code} value={country.name}>
-                              <span>{country.flagEmoji}</span>
-                              <span className="pl-2">{country.name}</span>
-                            </SelectItem>
-                          ))}
+                          {cityListGermany.map((city) => (
+                  <SelectItem key={city.code} value={city.name}>
+                    <span className="pl-2">{city.name}</span>
+                  </SelectItem>
+                ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>

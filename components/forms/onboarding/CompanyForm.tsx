@@ -19,7 +19,6 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
-import { countryList } from "@/app/utils/countriesList";
 import { Textarea } from "@/components/ui/textarea";
 import { UploadDropzone } from "@/components/general/UploadThingReexported";
 import { createCompany } from "@/app/actions";
@@ -27,6 +26,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { XIcon } from "lucide-react";
+import { cityListGermany } from "@/app/utils/citiesList";
 
 export function CompanyForm() {
   const form = useForm<z.infer<typeof companySchema>>({
@@ -87,17 +87,11 @@ export function CompanyForm() {
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      {countryList.map((country) => (
-                        <SelectItem key={country.code} value={country.name}>
-                          <span>{country.flagEmoji}</span>
-                          <span className="pl-2">{country.name}</span>
+                      {cityListGermany.map((city) => (
+                        <SelectItem key={city.code} value={city.name}>
+                          <span className="pl-2">{city.name}</span>
                         </SelectItem>
                       ))}
-
-                      {/*             <SelectItem value="nurnberg"><span>Nürnberg</span></SelectItem>
-                        <SelectItem value="munchen"><span>München</span></SelectItem>
-                        <SelectItem value="regensburg"><span>Regensburg</span></SelectItem>
-                        <SelectItem value="wurzburg"><span>Würzburg</span></SelectItem> */}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -169,7 +163,7 @@ export function CompanyForm() {
                         variant="destructive"
                         size="icon"
                         className="absolute -top-2 -right-2"
-                        onClick={()=> field.onChange("")}>
+                        onClick={() => field.onChange("")}>
                         <XIcon className="size-4" />
                       </Button>
                     </div>

@@ -22,7 +22,7 @@ import {
   SelectLabel,
   SelectItem,
 } from "../ui/select";
-import { countryList } from "@/app/utils/countriesList";
+
 import { SalaryRangeSelector } from "../general/SalaryRangeSelector";
 import { JobDescriptionEditor } from "../richTextEditor/JobDescriptionEditor";
 import BenefitsSelector from "./BenefitsSelector";
@@ -34,6 +34,7 @@ import { UploadDropzone } from "@/components/general/UploadThingReexported";
 import JobListingDurationSelector from "./JobListingDurationSelector";
 import { createJob } from "@/app/actions";
 import { useState } from "react";
+import { cityListGermany } from "@/app/utils/citiesList";
 
 interface iAppProps {
   companyName: string;
@@ -72,7 +73,7 @@ export function CreateJobForm({
     },
   });
 
-  const [pending, setPending]= useState(false);
+  const [pending, setPending] = useState(false);
 
   async function onSubmit(values: z.infer<typeof jobSchema>) {
     try {
@@ -157,18 +158,10 @@ export function CreateJobForm({
                       </FormControl>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectLabel>Worldwide</SelectLabel>
-                          <SelectItem value="worldwide">
-                            <span>🌍</span>
-                            <span className="pl-2">Worldwide / Remote</span>
-                          </SelectItem>
-                        </SelectGroup>
-                        <SelectGroup>
                           <SelectLabel>Location</SelectLabel>
-                          {countryList.map((country) => (
-                            <SelectItem key={country.code} value={country.name}>
-                              <span>{country.flagEmoji}</span>
-                              <span className="pl-2">{country.name}</span>
+                          {cityListGermany.map((city) => (
+                            <SelectItem key={city.code} value={city.name}>
+                              <span className="pl-2">{city.name}</span>
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -255,18 +248,10 @@ export function CreateJobForm({
                       </FormControl>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectLabel>Worldwide</SelectLabel>
-                          <SelectItem value="worldwide">
-                            <span>🌍</span>
-                            <span className="pl-2">Worldwide / Remote</span>
-                          </SelectItem>
-                        </SelectGroup>
-                        <SelectGroup>
                           <SelectLabel>Location</SelectLabel>
-                          {countryList.map((country) => (
-                            <SelectItem key={country.code} value={country.name}>
-                              <span>{country.flagEmoji}</span>
-                              <span className="pl-2">{country.name}</span>
+                          {cityListGermany.map((city) => (
+                            <SelectItem key={city.code} value={city.name}>
+                              <span className="pl-2">{city.name}</span>
                             </SelectItem>
                           ))}
                         </SelectGroup>

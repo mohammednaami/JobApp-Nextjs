@@ -14,9 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { countryList } from "@/app/utils/countriesList";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
+import { cityListGermany } from "@/app/utils/citiesList";
 
 const jobTypes = ["full_time", "part_time", "contract", "internship"];
 
@@ -67,7 +67,7 @@ export default function JobFilter() {
   }
 
   return (
-    <Card className="col-span-1 h-fit">
+    <Card className="col-span-2 md:col-span-1 h-fit">
       <CardHeader className="flex flex-row justify-between items-center">
         <CardTitle className="text-2xl font-semibold">Filters</CardTitle>
         <Button
@@ -113,18 +113,10 @@ export default function JobFilter() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Worldwide</SelectLabel>
-                <SelectItem value="worldwide">
-                  <span>🌍</span>
-                  <span className="pl-2">Worldwide / Remote</span>
-                </SelectItem>
-              </SelectGroup>
-              <SelectGroup>
                 <SelectLabel>Location</SelectLabel>
-                {countryList.map((country) => (
-                  <SelectItem key={country.code} value={country.name}>
-                    <span>{country.flagEmoji}</span>
-                    <span className="pl-2">{country.name}</span>
+                {cityListGermany.map((city) => (
+                  <SelectItem key={city.code} value={city.name}>
+                    <span className="pl-2">{city.name}</span>
                   </SelectItem>
                 ))}
               </SelectGroup>

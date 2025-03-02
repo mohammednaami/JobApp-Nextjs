@@ -1,4 +1,3 @@
-import { getFlagEmoji } from "@/app/utils/countriesList";
 import { prisma } from "@/app/utils/db";
 import { formatRelativeTime } from "@/app/utils/formatRelativeTime";
 import { benefits } from "@/app/utils/listOfBenefits";
@@ -113,8 +112,6 @@ export default async function JobIdPage({ params }: { params: Params }) {
 
   const { jobData: data, savedJob } = await getJob(jobId, session?.user?.id);
 
-  const locationFlag = getFlagEmoji(data.location);
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
       <div className="lg:col-span-2 space-y-8">
@@ -131,7 +128,6 @@ export default async function JobIdPage({ params }: { params: Params }) {
               </Badge>
               <span className="hidden md:inline text-muted-foreground">*</span>
               <Badge className="rounded-full" variant="default">
-                {locationFlag && <span className="mr-1">{locationFlag}</span>}
                 {data.location}
               </Badge>
               <span className="hidden md:inline text-muted-foreground">*</span>
@@ -227,13 +223,14 @@ export default async function JobIdPage({ params }: { params: Params }) {
               <span className="text-sm text-muted-foreground">
                 Employment Type
               </span>
-              <span className="text-sm">{data.employmentType}</span>
+              <span className="text-sm">{data.employmentType.replace("_", " ").charAt(0).toUpperCase() +
+                    data.employmentType.replace("_", " ").slice(1)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">Location</span>
               <span className="text-sm">
-                {locationFlag && <span className="mr-1">{locationFlag}</span>}
                 {data.location}
+
               </span>
             </div>
           </div>
