@@ -5,7 +5,6 @@ import { buttonVariants } from "../ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { auth } from "@/app/utils/auth";
 import { UserDropdown } from "./UserDropdown";
-import { requireUser } from "@/app/utils/requireUser";
 import { checkTypeUser } from "@/app/actions";
 export async function NavBar() {
   const session = await auth();

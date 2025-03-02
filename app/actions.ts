@@ -347,14 +347,10 @@ export async function ApplyJobSeeker(data: ApplyFormValues) {
 }
 
 export async function checkTypeUser(userId: string) {
-    try {
         const user = await prisma.user.findUnique({
             where: { id: userId },
             select: { userType: true },
         });
 
         return user;
-    } catch (error) {
-        return null;
-    }
 }
