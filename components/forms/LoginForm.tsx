@@ -81,9 +81,9 @@ export default async function LoginForm() {
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome Back</CardTitle>
+          <CardTitle className="text-xl">Welcome</CardTitle>
           <CardDescription>
-            Login with your Google or Linkedin account
+            Create an Account or Login with your Google or Linkedin account
           </CardDescription>
         </CardHeader>
         <CardContent>
