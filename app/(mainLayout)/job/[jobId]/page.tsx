@@ -104,12 +104,12 @@ export default async function JobIdPage({ params }: { params: Params }) {
 
   const session = await auth();
 
-/*    const req = await request();
+    const req = await request();
   const decision = await getClient(!!session).protect(req, { requested: 100 });
 
   if (decision.isDenied()) {
     throw new Error("Forbiden");
-  }  */
+  } 
 
   const { jobData: data, savedJob } = await getJob(jobId, session?.user?.id);
 
