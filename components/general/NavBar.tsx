@@ -5,8 +5,16 @@ import { buttonVariants } from "../ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { auth } from "@/app/utils/auth";
 import { UserDropdown } from "./UserDropdown";
+import { requireUser } from "@/app/utils/requireUser";
+import { checkTypeUser } from "@/app/actions";
 export async function NavBar() {
   const session = await auth();
+  let type: string | null = null; // Default value
+
+  if (session?.user?.id) {
+    const userType = await checkTypeUser(session.user.id);
+    type = userType?.userType ?? null;
+  }
 
   return (
     <nav className="flex items-center justify-between py-5">
@@ -16,33 +24,36 @@ export async function NavBar() {
           Job Board<span className="text-primary"></span>
         </h1>
       </Link>
-      {/*       <div className="flex items-center gap-4">
-        <ThemeToggle />
-        {session?.user ? (
-          <form
-            action={async () => {
-              "use server";
-              await signOut({ redirectTo: "/" });
-            }}>
-            <Button>Logout</Button>
-          </form>
-        ) : (
-          <Link
-            href="/login"
-            className={buttonVariants({ variant: "outline", size: "lg" })}>
-            Login
-          </Link>
-        )}
-      </div> */}
 
       {/* Desktop Navigation */}
       <div className="hidden md:flex items-center gap-5">
         <ThemeToggle />
-        <Link className={buttonVariants({ size: "lg" })} href="/post-job">
-          Post Job
-        </Link>
+        {type === "JOB_SEEKER" && (
+          <Link
+            className={buttonVariants({ size: "lg" })}
+            href="/my-applied-jobs">
+            My Applied Jobs
+          </Link>
+        )}
+
+        {type === "COMPANY" && (
+          <Link className={buttonVariants({ size: "lg" })} href="/post-job">
+            Post Job
+          </Link>
+        )}
+
+        {type === null && (
+          <Link className={buttonVariants({ size: "lg" })} href="/onboarding">
+            Get started
+          </Link>
+        )}
+
         {session?.user ? (
-          <UserDropdown email={session.user.email as string} image={session.user.image as string} name={session.user.name as string} />
+          <UserDropdown
+            email={session.user.email as string}
+            image={session.user.image as string}
+            name={session.user.name as string}
+          />
         ) : (
           <Link
             href="/login"

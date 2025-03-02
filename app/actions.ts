@@ -307,48 +307,54 @@ export async function deleteJobPost(jobId: string) {
 
 export async function ApplyJobSeeker(data: ApplyFormValues) {
     try {
-      const session = await requireUser();
-  
-      // Ensure user is a JobSeeker
-      const jobSeeker = await prisma.jobSeeker.findUnique({
-        where: { userId: session.id },
-      });
-  
-      if (!jobSeeker) {
-        return { error: "Only job seekers can apply." };
-    }
-  
-      // Ensure job post exists
-      const jobPost = await prisma.jobPost.findUnique({
-        where: { id: data.jobId },
-      });
-  
-      if (!jobPost) {
-        return { error: "Job post not found."};
-    }
-  
-      // Check if user already applied
-      const existingApplication = await prisma.applyJobPost.findUnique({
-        where: { jobSeekerId_jobPostId: { jobSeekerId: jobSeeker.id, jobPostId: data.jobId } },
-      });
-  
-      if (existingApplication) {
-        return { error: "You have already applied for this job."};
-    }
-  
-      // Apply for the job
-      await prisma.applyJobPost.create({
-        data: {
-          jobPostId: data.jobId,
-          jobSeekerId: jobSeeker.id,
-          coverLetter: null,
-          status: "PENDING",
-        },
-      });
-  
-      return { success: true, message: "Applied successfully!"};
+        const session = await requireUser();
+
+        const jobSeeker = await prisma.jobSeeker.findUnique({
+            where: { userId: session.id },
+        });
+
+        if (!jobSeeker) {
+            return { error: "Only job seekers can apply." };
+        }
+        const jobPost = await prisma.jobPost.findUnique({
+            where: { id: data.jobId },
+        });
+        if (!jobPost) {
+            return { error: "Job post not found." };
+        }
+        const existingApplication = await prisma.applyJobPost.findUnique({
+            where: { jobSeekerId_jobPostId: { jobSeekerId: jobSeeker.id, jobPostId: data.jobId } },
+        });
+
+        if (existingApplication) {
+            return { error: "You have already applied for this job." };
+        }
+
+        await prisma.applyJobPost.create({
+            data: {
+                jobPostId: data.jobId,
+                jobSeekerId: jobSeeker.id,
+                coverLetter: null,
+                status: "PENDING",
+            },
+        });
+
+        return { success: true, message: "Applied successfully!" };
     } catch (error) {
-      console.error("Application Error:", error);
-      return { error: "Internal Server Error"};
+        console.error("Application Error:", error);
+        return { error: "Internal Server Error" };
     }
-  }
+}
+
+export async function checkTypeUser(userId: string) {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { userType: true },
+        });
+
+        return user;
+    } catch (error) {
+        return null;
+    }
+}
