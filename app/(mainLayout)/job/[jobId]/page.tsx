@@ -4,7 +4,7 @@ import { formatRelativeTime } from "@/app/utils/formatRelativeTime";
 import { benefits } from "@/app/utils/listOfBenefits";
 import { JsonToHtlml } from "@/components/utils/JsonToHtml";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
@@ -16,6 +16,7 @@ import { auth } from "@/app/utils/auth";
 import Link from "next/link";
 import { SaveJobButton } from "@/components/forms/SubmitButtons";
 import { savedJobPost, unSavedJobPost } from "@/app/actions";
+import ApplyJobForm from "@/components/forms/ApplyJobForm";
 
 const aj = arcjet.withRule(
   detectBot({
@@ -29,7 +30,7 @@ function getClient(session: boolean) {
     return aj.withRule(
       tokenBucket({
         mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
-        refillRate: 30, // refill 30 tokens per interval
+        refillRate: 100, // refill 30 tokens per interval
         interval: 60, // 60 second interval
         capacity: 100, // bucket maximum capacity of 100 tokens
       })
@@ -38,7 +39,7 @@ function getClient(session: boolean) {
     return aj.withRule(
       tokenBucket({
         mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
-        refillRate: 10, // refill 30 tokens per interval
+        refillRate: 100, // refill 30 tokens per interval
         interval: 60, // 60 second interval
         capacity: 100, // bucket maximum capacity of 100 tokens
       })
@@ -103,12 +104,12 @@ export default async function JobIdPage({ params }: { params: Params }) {
 
   const session = await auth();
 
-  const req = await request();
-  const decision = await getClient(!!session).protect(req, { requested: 20 });
+/*    const req = await request();
+  const decision = await getClient(!!session).protect(req, { requested: 100 });
 
   if (decision.isDenied()) {
     throw new Error("Forbiden");
-  } 
+  }  */
 
   const { jobData: data, savedJob } = await getJob(jobId, session?.user?.id);
 
@@ -135,7 +136,6 @@ export default async function JobIdPage({ params }: { params: Params }) {
               <span className="hidden md:inline text-muted-foreground">*</span>
             </div>
           </div>
-
 
           {session?.user ? (
             <form
@@ -195,7 +195,9 @@ export default async function JobIdPage({ params }: { params: Params }) {
                 JobApp. This helps us grow
               </p>
             </div>
-            <Button className="w-full">Apply now</Button>
+
+            <ApplyJobForm jobId={jobId} />
+
           </div>
         </Card>
         <Card className="p-6">

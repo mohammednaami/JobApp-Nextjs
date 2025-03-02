@@ -12,6 +12,8 @@ import { jobListingDurationPricing } from "./utils/JobListingDurationPricing";
 import { inngest } from "./utils/inngest/client";
 import { revalidatePath } from "next/cache";
 import secureFun from "./utils/secureFun";
+import { ApplyFormValues } from "@/components/forms/ApplyJobForm";
+
 
 const aj = arcjet.withRule(
     shield({
@@ -296,9 +298,57 @@ export async function deleteJobPost(jobId: string) {
         }
     });
 
-    
+
 
 
     return redirect("/my-jobs");
 
 }
+
+export async function ApplyJobSeeker(data: ApplyFormValues) {
+    try {
+      const session = await requireUser();
+  
+      // Ensure user is a JobSeeker
+      const jobSeeker = await prisma.jobSeeker.findUnique({
+        where: { userId: session.id },
+      });
+  
+      if (!jobSeeker) {
+        return { error: "Only job seekers can apply." };
+    }
+  
+      // Ensure job post exists
+      const jobPost = await prisma.jobPost.findUnique({
+        where: { id: data.jobId },
+      });
+  
+      if (!jobPost) {
+        return { error: "Job post not found."};
+    }
+  
+      // Check if user already applied
+      const existingApplication = await prisma.applyJobPost.findUnique({
+        where: { jobSeekerId_jobPostId: { jobSeekerId: jobSeeker.id, jobPostId: data.jobId } },
+      });
+  
+      if (existingApplication) {
+        return { error: "You have already applied for this job."};
+    }
+  
+      // Apply for the job
+      const application = await prisma.applyJobPost.create({
+        data: {
+          jobPostId: data.jobId,
+          jobSeekerId: jobSeeker.id,
+          coverLetter: null,
+          status: "PENDING",
+        },
+      });
+  
+      return { success: true, message: "Applied successfully!"};
+    } catch (error) {
+      console.error("Application Error:", error);
+      return { error: "Internal Server Error"};
+    }
+  }

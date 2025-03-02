@@ -71,6 +71,8 @@ model JobSeeker {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  ApplyJobPost ApplyJobPost[]
 }
 
 model Account {
@@ -132,6 +134,7 @@ model JobPost {
   companyId String
 
   SavedJobPost SavedJobPost[]
+  ApplyJobPost ApplyJobPost[]
 }
 
 enum JobPostStatus {
@@ -152,4 +155,28 @@ model SavedJobPost {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, jobPostId])
+}
+
+model ApplyJobPost {
+  id        String   @id @default(uuid())
+  
+  JobSeeker JobSeeker @relation(fields: [jobSeekerId], references: [id])
+  jobSeekerId String
+
+  JobPost   JobPost @relation(fields: [jobPostId], references: [id])
+  jobPostId String
+
+  coverLetter String?
+  status      ApplicationStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([jobSeekerId, jobPostId]) // Prevents duplicate applications
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
