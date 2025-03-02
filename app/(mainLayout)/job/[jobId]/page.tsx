@@ -30,7 +30,7 @@ function getClient(session: boolean) {
     return aj.withRule(
       tokenBucket({
         mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
-        refillRate: 100, // refill 30 tokens per interval
+        refillRate: 60, // refill 30 tokens per interval
         interval: 60, // 60 second interval
         capacity: 100, // bucket maximum capacity of 100 tokens
       })
@@ -39,7 +39,7 @@ function getClient(session: boolean) {
     return aj.withRule(
       tokenBucket({
         mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
-        refillRate: 100, // refill 30 tokens per interval
+        refillRate: 10, // refill 30 tokens per interval
         interval: 60, // 60 second interval
         capacity: 100, // bucket maximum capacity of 100 tokens
       })
@@ -105,7 +105,7 @@ export default async function JobIdPage({ params }: { params: Params }) {
   const session = await auth();
 
     const req = await request();
-  const decision = await getClient(!!session).protect(req, { requested: 100 });
+  const decision = await getClient(!!session).protect(req, { requested: 20 });
 
   if (decision.isDenied()) {
     throw new Error("Forbiden");
