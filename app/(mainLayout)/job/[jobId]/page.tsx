@@ -25,7 +25,7 @@ const aj = arcjet.withRule(
   })
 );
 
-/* function getClient(session: boolean) {
+function getClient(session: boolean) {
   if (session) {
     return aj.withRule(
       tokenBucket({
@@ -45,7 +45,7 @@ const aj = arcjet.withRule(
       })
     );
   }
-} */
+}
 
 async function getJob(jobId: string, userId?: string) {
   const [jobData, savedJob] = await Promise.all([
@@ -104,12 +104,12 @@ export default async function JobIdPage({ params }: { params: Params }) {
 
   const session = await auth();
 
-/*     const req = await request();
+     const req = await request();
   const decision = await getClient(!!session).protect(req, { requested: 20 });
 
   if (decision.isDenied()) {
     throw new Error("Forbiden");
-  }  */
+  } 
 
   const { jobData: data, savedJob } = await getJob(jobId, session?.user?.id);
 
