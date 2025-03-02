@@ -47,7 +47,8 @@ export default function JobCard({ job }: iAppProps) {
                   *
                 </span>
                 <Badge className="rounded-full" variant="secondary">
-                  {job.employmentType}
+                  {job.employmentType.replace("_", " ").charAt(0).toUpperCase() +
+                    job.employmentType.replace("_", " ").slice(1)}
                 </Badge>
                 <span className="hidden md:inline text-muted-foreground">
                   *

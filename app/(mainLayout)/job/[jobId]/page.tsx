@@ -25,7 +25,7 @@ const aj = arcjet.withRule(
   })
 );
 
-function getClient(session: boolean) {
+/* function getClient(session: boolean) {
   if (session) {
     return aj.withRule(
       tokenBucket({
@@ -45,7 +45,7 @@ function getClient(session: boolean) {
       })
     );
   }
-}
+} */
 
 async function getJob(jobId: string, userId?: string) {
   const [jobData, savedJob] = await Promise.all([
@@ -104,29 +104,30 @@ export default async function JobIdPage({ params }: { params: Params }) {
 
   const session = await auth();
 
-    const req = await request();
+/*     const req = await request();
   const decision = await getClient(!!session).protect(req, { requested: 20 });
 
   if (decision.isDenied()) {
     throw new Error("Forbiden");
-  } 
+  }  */
 
   const { jobData: data, savedJob } = await getJob(jobId, session?.user?.id);
 
   const locationFlag = getFlagEmoji(data.location);
 
   return (
-    <div className="grid lg:grid-cols-3 gap-8">
-      <div className="space-y-8 col-span-2">
-        <div className="flex items-center justify-between">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+      <div className="lg:col-span-2 space-y-8">
+        <div className="flex flex-col sm:flex-row justify-between">
           <div>
-            <h1 className="text-3xl font-bold">{data.jobTitle}</h1>
-            <div className="flex items-center gap-2 mt-2">
+            <h1 className="text-2xl sm:text-3xl font-bold">{data.jobTitle}</h1>
+            <div className="flex flex-wrap items-center gap-2 mt-2">
               <p className="font-medium text-muted-foreground">
                 {data.Company?.name}
               </p>
               <Badge className="rounded-full" variant="secondary">
-                {data.employmentType}
+                {data.employmentType.replace("_", " ").charAt(0).toUpperCase() +
+                    data.employmentType.replace("_", " ").slice(1)}
               </Badge>
               <span className="hidden md:inline text-muted-foreground">*</span>
               <Badge className="rounded-full" variant="default">
@@ -143,14 +144,14 @@ export default async function JobIdPage({ params }: { params: Params }) {
                 savedJob
                   ? unSavedJobPost.bind(null, savedJob.id)
                   : savedJobPost.bind(null, jobId)
-              }>
+              } className="mt-2 sm:mt-0">
               <SaveJobButton savedJob={!!savedJob} />
             </form>
           ) : (
             <Link
               href="/login"
-              className={buttonVariants({ variant: "outline" })}>
-              <Heart className="size-4" /> Save Job
+              className={cn(buttonVariants({ variant: "outline" }), "mt-2 sm:mt-0")}>
+              <Heart className="size-4 " /> Save Job
             </Link>
           )}
         </div>
@@ -185,8 +186,8 @@ export default async function JobIdPage({ params }: { params: Params }) {
           </div>
         </section>
       </div>
-      <div className="space-y-6 col-span-1">
-        <Card className="p-6">
+      <div className="flex flex-col space-y-6 lg:col-span-1 w-full">
+        <Card className="p-6 w-full">
           <div className="space-y-4">
             <div>
               <h3 className="font-semibold">Apply Now</h3>
@@ -195,12 +196,10 @@ export default async function JobIdPage({ params }: { params: Params }) {
                 JobApp. This helps us grow
               </p>
             </div>
-
             <ApplyJobForm jobId={jobId} />
-
           </div>
         </Card>
-        <Card className="p-6">
+        <Card className="p-6 w-full">
           <h3 className="font-semibold">About the job</h3>
           <div className="space-y-2">
             <div className="flex justify-between">
@@ -239,7 +238,7 @@ export default async function JobIdPage({ params }: { params: Params }) {
             </div>
           </div>
         </Card>
-        <Card className="p-6">
+        <Card className="p-6 w-full">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Image
