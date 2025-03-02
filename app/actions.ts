@@ -337,7 +337,7 @@ export async function ApplyJobSeeker(data: ApplyFormValues) {
     }
   
       // Apply for the job
-      const application = await prisma.applyJobPost.create({
+      await prisma.applyJobPost.create({
         data: {
           jobPostId: data.jobId,
           jobSeekerId: jobSeeker.id,

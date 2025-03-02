@@ -32,7 +32,7 @@ export default function ApplyJobForm({ jobId }: iAppProps) {
         toast.error(result.error || "Something went wrong.");
       }
     } catch (error) {
-      toast.error("An unexpected error occurred.");
+      toast.error("An unexpected error occurred." + error);
     } finally {
       setPending(false);
     }
