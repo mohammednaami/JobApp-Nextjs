@@ -106,7 +106,13 @@ export default async function LoginForm() {
               }}>
               <GeneralSubmitButton className="w-full" variant="outline" text="Login with Github" icon={<Github />} />
             </form>
-            <form>
+            <form action={async () => {
+                "use server";
+                await signIn("linkedin",{
+                  redirectTo: "/onboarding",
+                }); 
+
+              }}>
               <GeneralSubmitButton className="w-full" variant="outline" text="Login with Linkedin" icon={<LinkedIn />} />
             </form>
           </div>
