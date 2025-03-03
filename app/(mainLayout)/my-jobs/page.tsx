@@ -2,7 +2,7 @@ import { prisma } from "@/app/utils/db";
 import { formatRelativeTime } from "@/app/utils/formatRelativeTime";
 import { requireUser } from "@/app/utils/requireUser";
 import { EmptyState } from "@/components/utils/EmptyState";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -26,10 +26,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MoreHorizontal, PenBox, XCircle } from "lucide-react";
+import { MoreHorizontal, PenBox, UserRoundSearch, XCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { CopyLinkMenuItem } from "@/components/utils/CopyLink";
+import { cn } from "@/lib/utils";
 
 type JobListing = {
   id: string;
@@ -40,8 +41,10 @@ type JobListing = {
     name: string;
     logo: string;
   };
+  _count: {
+    ApplyJobPost: number;
+  };
 };
-
 
 async function getJob(userId: string): Promise<JobListing[]> {
   const data = await prisma.jobPost.findMany({
@@ -61,6 +64,11 @@ async function getJob(userId: string): Promise<JobListing[]> {
           logo: true,
         },
       },
+      _count: {
+        select: {
+          ApplyJobPost: true,
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",
@@ -69,7 +77,6 @@ async function getJob(userId: string): Promise<JobListing[]> {
 
   return data;
 }
-
 
 export default async function MyJobsPage() {
   const session = await requireUser();
@@ -101,6 +108,7 @@ export default async function MyJobsPage() {
                   <TableHead>Company</TableHead>
                   <TableHead>Job Title</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Candidates</TableHead>
                   <TableHead>Created at</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -124,6 +132,12 @@ export default async function MyJobsPage() {
                         listing.status.slice(1).toLowerCase()}
                     </TableCell>
                     <TableCell>
+                      <Link className={cn(buttonVariants({ variant: "default" }),"flex flex-wrap items-center gap-2")}  href={`/my-jobs/${listing.id}/candidate`} > 
+                      <UserRoundSearch className="size-4" /> 
+                       {listing._count.ApplyJobPost}
+                       </Link>
+                    </TableCell>
+                    <TableCell>
                       {formatRelativeTime(listing.createdAt)}
                     </TableCell>
                     <TableCell className="text-right">
@@ -141,8 +155,10 @@ export default async function MyJobsPage() {
                               Edit
                             </Link>
                           </DropdownMenuItem>
-                            <CopyLinkMenuItem jobUrl={`${process.env.NEXT_PUBLIC_URL}/job/${listing.id}`} />
-                          <DropdownMenuSeparator/>
+                          <CopyLinkMenuItem
+                            jobUrl={`${process.env.NEXT_PUBLIC_URL}/job/${listing.id}`}
+                          />
+                          <DropdownMenuSeparator />
                           <DropdownMenuItem asChild>
                             <Link href={`/my-jobs/${listing.id}/delete`}>
                               <XCircle />
