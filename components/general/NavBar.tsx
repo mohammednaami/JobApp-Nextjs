@@ -6,7 +6,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { auth } from "@/app/utils/auth";
 import { UserDropdown } from "./UserDropdown";
 import { checkTypeUser } from "@/app/actions";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 
 export async function NavBar() {
   const session = await auth();
