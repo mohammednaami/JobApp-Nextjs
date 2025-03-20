@@ -81,7 +81,6 @@ async function getJob(jobId: string, userId?: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-
   const { jobId } = await params;
   const { jobData } = await getJob(jobId);
   if (!jobData) {
@@ -105,7 +104,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [jobData.Company.logo],
     },
   };
-
 }
 
 export default async function JobIdPage({ params }: Props) {
@@ -206,7 +204,15 @@ export default async function JobIdPage({ params }: Props) {
                 JobApp. This helps us grow
               </p>
             </div>
-            <ApplyJobForm jobId={jobId} />
+            {session?.user ? (
+              <ApplyJobForm jobId={jobId} />
+            ) : (
+              <Link
+                href="/login"
+                className={cn(buttonVariants({ size: "lg" }), "w-full")}>
+                Apply Now
+              </Link>
+            )}
           </div>
         </Card>
         <Card className="p-6 w-full">
