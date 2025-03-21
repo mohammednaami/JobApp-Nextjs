@@ -23,7 +23,7 @@ export async function NavBar() {
       <Link href="/" className="flex items-center gap-2">
         <Image src={Logo} alt="Job Platform Logo" width={40} height={40} />
         <h1 className="text-2xl font-bold">
-          Job Germany<span className="text-primary"></span>
+          Job Platform<span className="text-primary"></span>
         </h1>
       </Link>
 

@@ -39,7 +39,7 @@ export default async function Login(){
             <div className="flex w-full max-w-sm flex-col gap-6">
                 <Link href="/" className="flex items-center gap-2 self-center">
                 <Image src={Logo} alt="Logo" className="size-10" />
-                <h1 className="text-2xl font-bold">Job Germany<span className="text-primary"></span></h1>
+                <h1 className="text-2xl font-bold">Job Platform<span className="text-primary"></span></h1>
                 </Link>
                 <LoginForm />
         </div>
